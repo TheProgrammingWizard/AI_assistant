@@ -1,3 +1,16 @@
+<?php
+session_start();
+
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+
+if (!isset($_SESSION['username'])) {
+    header("Location: loginPage.php");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +44,7 @@
 <header>Personal Notes</header>
 
 <div>
-	<form action="mainMenu.html">
+	<form action="mainMenu.php">
 	  <button type="submit">Back to Menu</button>
 	</form>
 </div>
