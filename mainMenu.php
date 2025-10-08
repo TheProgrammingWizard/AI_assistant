@@ -1,3 +1,16 @@
+<?php
+session_start();
+
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+
+if (!isset($_SESSION['username'])) {
+    header("Location: loginPage.php");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,7 +42,7 @@
       	border: none;
       	padding: 10px;
       	margin: 50px auto;
-     }
+    }
 
 </style>
 </head>
@@ -38,15 +51,15 @@
 <header>NASA Hunch Project Main Menu</header>
 
 <div class = menu>
-	<form action="startingPage.html">
+	<form action="logout.php">
 	  <button type="submit">Log Out</button>
 	</form>
 	
-	<form action="notesPage.html">
+	<form action="notesPage.php">
 	  <button type="submit">Notes</button>
 	</form>
 	
-	<form action="aiAssistant.html">
+	<form action="aiAssistant.php">
 	  <button type="submit">AI Assistant</button>
 	</form>
 </div>
