@@ -12,9 +12,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $valid_users = [
         //username => password
-        "nasa_admin" => "apollo11",
-        "engineer_jane" => "orion2025",
-        "test_user" => "eclipseAI"
+        "commander_BlackHole" => "apollo11",
+        "engineer_Green" => "apollo14",
+        "navigator_Venom" => "apollo23"
     ];
 
     if (array_key_exists($username, $valid_users) && $valid_users[$username] === $password) {
