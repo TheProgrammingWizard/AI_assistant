@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Project: ECLIPSE</title>
+<title>Project Operation: ECLIPSE</title>
 <style>
 	body {
 		background-color: rgb(11, 61, 145);
@@ -30,7 +30,7 @@
 <body>
 
 <h1>AI Project Operation: ECLIPSE</h1>
-<h3>Login Portal</h3>
+<h3>Login Box</h3>
 
 <form method="post" action="loginProcess.php">
 	<input type="text" name="username" placeholder="Enter username" required><br>
