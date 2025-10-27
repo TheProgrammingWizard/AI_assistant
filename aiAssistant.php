@@ -15,50 +15,38 @@ if (!isset($_SESSION['username'])) {
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AI Project Operation: ECLIPSE</title>
+<title>AI Assistant - ECLIPSE</title>
 <style>
-    body {
+       body {
         background-color: rgb(11, 61, 145);
         text-align: center;
-        padding: 50px;
+        padding: 40px;
         font-family: Arial, sans-serif;
         color: white;
+        margin: 0;
+        overflow: hidden;
     }
 
     header {
-        color: white;
         font-size: 24px;
         margin-bottom: 20px;
     }
 
-    button {
-        background-color: rgb(255, 128, 64);
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        margin: 10px;
-        cursor: pointer;
-        border-radius: 5px;
-    }
-
-    button:hover {
-        background-color: rgb(230, 100, 40);
-    }
-
     #chat {
         max-width: 600px;
-        margin: 20px auto;
+        margin: 0 auto;
         background: white;
         padding: 20px;
         border-radius: 10px;
         color: black;
-        text-align: left;
         height: 300px;
         overflow-y: auto;
+        text-align: left;
     }
 
     .msg {
         margin: 10px 0;
+        word-wrap: break-word;
     }
 
     .bot {
@@ -71,7 +59,7 @@ if (!isset($_SESSION['username'])) {
     }
 
     #input-box {
-        margin-top: 10px;
+        margin-top: 15px;
     }
 
     #input {
@@ -80,48 +68,73 @@ if (!isset($_SESSION['username'])) {
         border-radius: 5px;
         border: 1px solid rgb(192, 192, 192);
     }
+
+    button {
+        background-color: rgb(255, 128, 64);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+
+    button:hover {
+        background-color: rgb(230, 100, 40);
+    }
 </style>
 </head>
 <body>
 
 <header>AI Assistant</header>
 
-<div>
-    <form action="mainMenu.php">
-        <button type="submit">Back to Menu</button>
-    </form>
+<div id="chat">
+    <div class="msg bot">Hello, astronaut! How can I assist your mission today?</div>
 </div>
 
-<div id="chat"></div>
-
 <div id="input-box">
-    <input type="text" id="input" placeholder="Type here...">
+    <input type="text" id="input" placeholder="Type your message here..." onkeypress="if(event.key==='Enter') send();">
     <button onclick="send()">Send</button>
 </div>
 
 <script>
-    let chat = document.getElementById("chat");
+const chat = document.getElementById("chat");
 
-    function send() {
-        let input = document.getElementById("input");
-        let msg = input.value;
-        if (msg.trim() === "") return;
+async function send() {
+    const input = document.getElementById("input");
+    const msg = input.value.trim();
+    if (msg === "") return;
 
-        chat.innerHTML += `<div class="msg user">${msg}</div>`;
-        input.value = "";
-        chat.scrollTop = chat.scrollHeight;
+    // Display user message
+    chat.innerHTML += `<div class="msg user">${msg}</div>`;
+    input.value = "";
+    chat.scrollTop = chat.scrollHeight;
 
-        
-        if (msg.toLowerCase().includes("next")) {
-            chat.innerHTML += `<div class="msg bot">🚀 Your next task is Photo Op at 10:30 AM.</div>`;
-        } else if (msg.toLowerCase().includes("status")) {
-            chat.innerHTML += `<div class="msg bot">🛰 All systems are operational. Oxygen levels nominal.</div>`;
-        } else {
-            chat.innerHTML += `<div class="msg bot">🤖 Got it. Want me to remind you about something later?</div>`;
+    try {
+        // Call Flask AI backend
+        const response = await fetch("http://localhost:5000/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: msg }) // <-- send user's text
+        });
+
+        if (!response.ok) throw new Error("Network error");
+
+        const data = await response.json();
+        chat.innerHTML += `<div class="msg bot">${data.reply}</div>`;
+
+        // Optionally, show recommended actions
+        if (data.recommended_actions && data.recommended_actions.length > 0) {
+            chat.innerHTML += `<div class="msg bot"><strong>Recommended actions:</strong><ul>${data.recommended_actions.map(a => `<li>${a}</li>`).join('')}</ul></div>`;
         }
-
-        chat.scrollTop = chat.scrollHeight;
+    } 
+    catch (error) {
+        console.error(error);
+        chat.innerHTML += `<div class="msg bot">Unable to reach AI backend. Make sure the Python server is running.</div>`;
     }
+
+    chat.scrollTop = chat.scrollHeight;
+}
 </script>
 
 </body>
