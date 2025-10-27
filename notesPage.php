@@ -15,39 +15,83 @@ if (!isset($_SESSION['username'])) {
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AI Project Operation: ECLIPSE</title>
+<title>Notes - ECLIPSE</title>
 <style>
+    body {
+        background-color: rgb(11, 61, 145);
+        text-align: center;
+        font-family: Arial, sans-serif;
+        color: white;
+        margin: 0;
+        padding: 30px;
+    }
 
-	body{
-		background-color: rgb(11, 61, 145);
-		text-align: center;
-      	padding: 50px;
-	}
-	
-	header{
-		color: white;
-		font-size: 20px;
-	}
-	
-	button {
-      	background-color:rgb(255, 128, 64);
-      	color: white;
-      	border: none;
-      	padding: 10px;
-      	margin: 50px auto;
-     }
+    header {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    textarea {
+        width: 80%;
+        height: 300px;
+        border-radius: 10px;
+        border: none;
+        padding: 15px;
+        font-size: 16px;
+    }
+
+    button {
+        background-color: rgb(255, 128, 64);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin-top: 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    button:hover {
+        background-color: rgb(230, 100, 40);
+    }
+
+	#message {
+        color: red;
+        opacity: 1;
+        transition: opacity 1s ease-out;
+        margin-top: 15px;
+    }
 
 </style>
 </head>
 <body>
 
-<header>Personal Notes</header>
+<header>Notes</header>
 
-<div>
-	<form action="mainMenu.php">
-	  <button type="submit">Back to Menu</button>
-	</form>
-</div>
+<form method="post" action="">
+    <textarea name="noteContent" placeholder="Type your mission notes here..."></textarea><br>
+    <button type="submit">Delete Notes</button>
+</form>
+
+<?php
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["noteContent"])) {
+    $note = htmlspecialchars($_POST["noteContent"]);
+    file_put_contents("notes.txt", $note);
+    echo "<p id='message'>Notes deleted successfully!</p>";
+}
+?>
+
+<script>
+    window.onload = function() {
+        const msg = document.getElementById("message");
+        if (msg) {
+            setTimeout(() => {
+                msg.style.opacity = "0";
+                setTimeout(() => msg.remove(), 1000);
+            }, 3000);
+        }
+    };
+</script>
 
 </body>
 </html>
