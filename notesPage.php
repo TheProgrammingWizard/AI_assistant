@@ -9,8 +9,23 @@ if (!isset($_SESSION['username'])) {
     header("Location: loginPage.php");
     exit;
 }
-?>
 
+$noteFile = 'notes.txt';
+$currentNote = "";
+
+// Load the saved notes (if any)
+if (file_exists($noteFile)) {
+    $currentNote = trim(file_get_contents($noteFile));
+}
+
+// Save notes when form is submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $newNote = $_POST['noteContent'];
+    file_put_contents($noteFile, $newNote);
+    $currentNote = $newNote;
+    echo "<script>alert('Notes saved!');</script>";
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,7 +56,7 @@ if (!isset($_SESSION['username'])) {
     }
 
     button {
-        background-color: rgb(255, 128, 64);
+        background-color: rgb(226, 62, 13);
         color: white;
         border: none;
         padding: 10px 20px;
@@ -52,14 +67,7 @@ if (!isset($_SESSION['username'])) {
     }
 
     button:hover {
-        background-color: rgb(230, 100, 40);
-    }
-
-	#message {
-        color: red;
-        opacity: 1;
-        transition: opacity 1s ease-out;
-        margin-top: 15px;
+        background-color: rgb(226, 62, 13);
     }
 
 </style>
@@ -68,30 +76,10 @@ if (!isset($_SESSION['username'])) {
 
 <header>Notes</header>
 
-<form method="post" action="">
-    <textarea name="noteContent" placeholder="Type your mission notes here..."></textarea><br>
-    <button type="submit">Delete Notes</button>
+<form method="post">
+    <textarea name="noteContent" placeholder="Type your mission notes here..."><?php echo htmlspecialchars($currentNote); ?></textarea><br>
+    <button type="submit">Save Notes</button>
 </form>
-
-<?php
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["noteContent"])) {
-    $note = htmlspecialchars($_POST["noteContent"]);
-    file_put_contents("notes.txt", $note);
-    echo "<p id='message'>Notes deleted successfully!</p>";
-}
-?>
-
-<script>
-    window.onload = function() {
-        const msg = document.getElementById("message");
-        if (msg) {
-            setTimeout(() => {
-                msg.style.opacity = "0";
-                setTimeout(() => msg.remove(), 1000);
-            }, 3000);
-        }
-    };
-</script>
 
 </body>
 </html>
