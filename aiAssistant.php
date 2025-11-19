@@ -70,7 +70,7 @@ if (!isset($_SESSION['username'])) {
     }
 
     button {
-        background-color: rgb(255, 128, 64);
+        background-color: rgb(226, 62, 13);
         color: white;
         border: none;
         padding: 10px 20px;
@@ -80,7 +80,7 @@ if (!isset($_SESSION['username'])) {
     }
 
     button:hover {
-        background-color: rgb(230, 100, 40);
+        background-color: rgb(226, 62, 13);
     }
 </style>
 </head>
@@ -124,9 +124,13 @@ async function send() {
         chat.innerHTML += `<div class="msg bot">${data.reply}</div>`;
 
         // Optionally, show recommended actions
-        if (data.recommended_actions && data.recommended_actions.length > 0) {
-            chat.innerHTML += `<div class="msg bot"><strong>Recommended actions:</strong><ul>${data.recommended_actions.map(a => `<li>${a}</li>`).join('')}</ul></div>`;
+        //if (data.recommended_actions && data.recommended_actions.length > 0) {
+            //chat.innerHTML += `<div class="msg bot"><strong>Recommended actions:</strong><ul>${data.recommended_actions.map(a => `<li>${a}</li>`).join('')}</ul></div>`;
+        //}
+        if (data.ml_analysis && data.ml_analysis.recommended_actions && data.ml_analysis.recommended_actions.length > 0) {
+            chat.innerHTML += `<div class="msg bot"><strong>Recommended actions:</strong><ul>${data.ml_analysis.recommended_actions.map(a => `<li>${a}</li>`).join('')}</ul></div>`;
         }
+
     } 
     catch (error) {
         console.error(error);
