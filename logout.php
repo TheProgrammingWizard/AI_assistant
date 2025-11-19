@@ -13,7 +13,7 @@ header("Expires: 0");
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AI Project Operation: ECLIPSE</title>
+<title>Logout - ECLIPSE</title>
 <style>
 
 	body{
@@ -22,12 +22,13 @@ header("Expires: 0");
       	padding: 50px;
 	}
 	
-	.login-box{
-		background-color: rgb(0, 128, 255);
-		padding: 20px;
-		border-radius: 10px;
-		width: 300px;
-		margin: 50px auto;
+	.logout-box{
+		background: rgba(0, 0, 0, 0.3);
+		padding: 40px 50px;
+		border-radius: 15px;
+		box-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+		text-align: center;
+		color: white;
 	}
 	
 	input {
@@ -37,18 +38,21 @@ header("Expires: 0");
     }
 
 	button {
-      	background-color:rgb(227, 62, 62);
-      	color: white;
-      	border: none;
-      	padding: 20px;
-      	margin: 20px auto;
+      	background-color: rgb(182, 17, 17);
+		color: white;
+		border: none;
+		padding: 14px 30px;
+		border-radius: 8px;
+		font-size: 1.1em;
+		cursor: pointer;
+		box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
      }
 
 </style>
 </head>
 <body>
 
-<div class="login-box">
+<div class="logout-box">
 	<h2>You have been logged out</h2>
 	<form action="loginPage.php" method="post">
 	  <button type="submit">Return to Login</button>
