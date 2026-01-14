@@ -9,6 +9,13 @@ if (!isset($_SESSION['username'])) {
     header("Location: loginPage.php");
     exit;
 }
+
+$reminderFile = 'reminder.txt';
+$currentReminder = "";
+
+if (file_exists($reminderFile)) {
+    $currentReminder = trim(file_get_contents($reminderFile));
+}
 ?>
 
 <!DOCTYPE html>
@@ -66,13 +73,13 @@ if (!isset($_SESSION['username'])) {
     letter-spacing: 1px;
     cursor: pointer;
     transition: all 0.3s;
-    background-color: #0080ff;
+    background-color: rgb(0, 128, 255);
     color: white;
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
   }
 
   .menu-button:hover {
-    background-color: #4db8ffff;
+    background-color: rgb(77, 184, 255);
     transform: translateY(-3px);
   }
 
@@ -84,7 +91,6 @@ if (!isset($_SESSION['username'])) {
     background-color: rgb(211, 49, 49);
   }
 
-  /* Overlay windows for AI and Notes */
   .overlay {
     position: fixed;
     top: 0;
@@ -123,6 +129,34 @@ if (!isset($_SESSION['username'])) {
   .closeBtn:hover {
     background-color: rgb(211, 49, 49);
   }
+
+  .reminder-display {
+    background: rgba(0, 0, 0, 0.35);
+    width: 500px;
+    margin: 25px auto 10px auto;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+    font-size: 1.05em;
+    line-height: 1.5em;
+}
+
+.reminder-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: rgb(77, 184, 255);
+}
+
+.nasa-logo {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 120px;
+    opacity: 0.9;
+    pointer-events: none;
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+}
+
 </style>
 </head>
 <body>
@@ -132,6 +166,17 @@ if (!isset($_SESSION['username'])) {
 </div>
 
 <header>Operation: ECLIPSE</header>
+
+<div class="reminder-display">
+    <div class="reminder-title">Daily Reminder</div>
+    <?php
+        if (!empty($currentReminder)) {
+            echo nl2br(htmlspecialchars($currentReminder));
+        } else {
+            echo "<em>No reminder set.</em>";
+        }
+    ?>
+</div>
 
 <div class="menu-box" id="menu">
     <button type="button" class="menu-button" onclick="openAI()">AI Assistant</button>
@@ -157,6 +202,8 @@ if (!isset($_SESSION['username'])) {
     <button class="closeBtn" onclick="closeReminder()">✖ Close</button>
     <iframe src="dailyReminder.php"></iframe>
 </div>
+
+<img src="NASA_logo.svg.png" alt="NASA HUNCH Logo" class="nasa-logo">
 
 <script>
 function openAI() {
@@ -192,4 +239,3 @@ function closeReminder() {
 
 </body>
 </html>
-
